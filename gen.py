@@ -2,6 +2,8 @@ import os
 import sys
 from datetime import datetime, timedelta
 from docx import Document
+from classes.environment_variable import EnvironmentVariable
+
 
 # Ensure correct command-line usage
 if len(sys.argv) < 2:
@@ -80,10 +82,19 @@ for row in range(4):
             tea_paragraph = cell.add_paragraph("Tea:\t")
             tea_paragraph.style = "Meals"
 
-# Save the document
-output_path = "/Users/mattlavis/Library/CloudStorage/GoogleDrive-matthew.lavis@gmail.com/My Drive/shopping/2025"
+# Get the document save path
+shopping_folder = EnvironmentVariable("shopping_folder", "string", False).value
+year_folder = "20" + date_arg[0:2]
+output_path = os.path.join(str(shopping_folder), year_folder)
+
+# Get the document save filename
 date_string = date_arg.replace("-", "")
-output_filename = f"shopping wc {date_string} sainsburys.docx"
+output_filename_template = str(EnvironmentVariable("output_filename_template", "string", False).value)
+output_filename = output_filename_template.format(date_string=date_string)
+
+# Get the full path
 output_path = os.path.join(output_path, output_filename)
+
+# Save the document
 doc.save(output_path)
 print(f"Document saved as {output_path}")

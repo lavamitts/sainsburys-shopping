@@ -23,6 +23,12 @@ This repo performs two actions:
   uv pip install -r requirements.txt
   ```
 
+## Configuration
+
+- Review env.sample
+- Take a copy and rename as .env
+- Complete configuration as per instructions
+
 ## Running 
 
 ### Generates an empty shopping list

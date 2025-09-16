@@ -15,11 +15,11 @@ class EnvironmentVariable(object):
                 sys.exit()
         else:
             if dtype in ("int", "num"):
-                self.value = int(os.getenv(v).strip())
+                self.value = int(str(os.getenv(v)).strip())
             elif dtype in ("bool", "boolean"):
-                self.value = self.num_to_bool(os.getenv(v).strip())
+                self.value = self.num_to_bool(str(os.getenv(v)).strip())
             else:
-                self.value = os.getenv(v).strip()
+                self.value = str(os.getenv(v)).strip()
 
     def num_to_bool(self, num):
         num = num.strip().lower()
