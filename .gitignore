@@ -197,3 +197,4 @@ resources/output
 resources/qr_codes
 resources/temp
 *.code-workspace
+make_shopping_list.sh

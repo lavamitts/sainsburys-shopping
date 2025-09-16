@@ -1,6 +1,11 @@
 # Make shopping lists
 
----
+## About this repository
+
+This repo performs two actions:
+
+- Generates shopping lists from a template based on a provided start date
+- Generates QR codes for hyperlinked recipes
 
 ## Installation
 
@@ -24,7 +29,7 @@
 
 - `python gen.py yymmdd`
 
-*or *
+  *or *
 
 - `python gen.py yymmdd no-qr`
 
