@@ -9,16 +9,17 @@ import sys
 class MyDocument(object):
     def __init__(self, date_string):
         self.date_string = date_string
+        self.get_folders_and_filenames()
+
+    def get_folders_and_filenames(self):
         self.year = "20" + self.date_string[0:2]
         shopping_folder = str(EnvironmentVariable("shopping_folder", "string", False).value)
-        filename = f"shopping wc {self.date_string} sainsburys.docx"
-        self.filename = os.path.join(shopping_folder, self.year, filename)
+        output_filename_template = str(EnvironmentVariable("output_filename_template", "string", False).value)
+        output_filename = output_filename_template.format(date_string=self.date_string)
+        self.filename = os.path.join(shopping_folder, self.year, output_filename)
         if not (os.path.exists(self.filename)):
             print("File cannot be found, would you like to generate a blank file instead?")
             sys.exit()
-
-        #
-        print(self.filename)
 
     def cell_contains_hyperlink(self, cell, part):
         """
