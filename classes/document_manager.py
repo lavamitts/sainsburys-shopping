@@ -9,11 +9,14 @@ class DocumentManager(object):
         self.check_arguments()
 
     def check_arguments(self):
-        if len(self.argv) < 1:
-            print("\n\nNo date argument specified.\n")
-            sys.exit()
+        if len(self.argv) < 2:
+            # print("\n\nNo date argument specified.\n")
+            # sys.exit()
+            date_string = u.next_saturday()
 
-        date_string = self.argv[1]
+        else:
+            date_string = self.argv[1]
+
         if len(date_string) > 6:
             date_string2 = date_string[0:6]
         else:

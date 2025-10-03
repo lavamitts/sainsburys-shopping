@@ -1,7 +1,17 @@
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from pathlib import Path
 import os
 import re
+
+
+def next_saturday():
+    today = date.today()
+    # weekday(): Monday=0 ... Sunday=6
+    days_ahead = (5 - today.weekday()) % 7
+    if days_ahead == 0:  # If today is Saturday, go to next week
+        days_ahead = 7
+    next_sat = today + timedelta(days=days_ahead)
+    return next_sat.strftime("%y%m%d")
 
 
 def extract_text_in_parentheses(text):

@@ -3,15 +3,17 @@ import sys
 from datetime import datetime, timedelta
 from docx import Document
 from classes.environment_variable import EnvironmentVariable
-
+import utils.utils as u
 
 # Ensure correct command-line usage
 if len(sys.argv) < 2:
-    print("Usage: python script.py YY-MM-DD {no-qr}")
-    sys.exit(1)
+    # print("Usage: python script.py YY-MM-DD {no-qr}")
+    # sys.exit(1)
+    date_arg = u.next_saturday()
+else:
+    # Parse the input date
+    date_arg = str(sys.argv[1])
 
-# Parse the input date
-date_arg = str(sys.argv[1])
 try:
     input_date = datetime.strptime(date_arg, "%y-%m-%d")
     has_hyphens = True
@@ -22,6 +24,7 @@ except ValueError:
     except ValueError:
         print("Error: Invalid date format. Use YY-MM-DD.")
         sys.exit(1)
+
 
 # Parse the no-qr flag
 generate_qrs = True
