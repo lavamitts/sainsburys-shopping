@@ -1,9 +1,10 @@
-import os
-import sys
+from classes.environment_variable import EnvironmentVariable
 from datetime import datetime, timedelta
 from docx import Document
-from classes.environment_variable import EnvironmentVariable
+import os
+import sys
 import utils.utils as u
+
 
 # Ensure correct command-line usage
 if len(sys.argv) < 2:
@@ -25,6 +26,28 @@ except ValueError:
         print("Error: Invalid date format. Use YY-MM-DD.")
         sys.exit(1)
 
+
+# Get the document save path
+shopping_folder = EnvironmentVariable("shopping_folder", "string", False).value
+year_folder = "20" + date_arg[0:2]
+output_path = os.path.join(str(shopping_folder), year_folder)
+
+# Get the document save filename
+date_string = date_arg.replace("-", "")
+output_filename_template = str(EnvironmentVariable("output_filename_template", "string", False).value)
+output_filename = output_filename_template.format(date_string=date_string)
+
+# Get the full path
+output_path = os.path.join(output_path, output_filename)
+
+if os.path.exists(output_path):
+    print("\n\nThe file already exists. Overwrite? (Y/N)")
+    choice = u.getch().lower()
+    print(choice)  # echo the key the user pressed
+    if choice != 'y':
+        print("\nAborted.")
+        sys.exit()
+    print("\nProceeding...")
 
 # Parse the no-qr flag
 generate_qrs = True

@@ -1,0 +1,3 @@
+source /Users/mattlavis/projects/personal-dev/shopping/.venv/bin/activate
+
+python qr.py

@@ -2,6 +2,9 @@ from datetime import datetime, date, timedelta
 from pathlib import Path
 import os
 import re
+import sys
+import termios
+import tty
 
 
 def next_saturday():
@@ -76,3 +79,15 @@ def validate_date_code(code: str) -> bool:
         return True
     except ValueError:
         return False
+
+
+def getch():
+    """Read a single character from stdin without pressing Enter."""
+    fd = sys.stdin.fileno()
+    old_settings = termios.tcgetattr(fd)
+    try:
+        tty.setraw(fd)
+        ch = sys.stdin.read(1)
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+    return ch
