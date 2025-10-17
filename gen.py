@@ -4,7 +4,7 @@ from docx import Document
 import os
 import sys
 import utils.utils as u
-
+import subprocess
 
 # Ensure correct command-line usage
 if len(sys.argv) < 2:
@@ -119,8 +119,9 @@ output_filename_template = str(EnvironmentVariable("output_filename_template", "
 output_filename = output_filename_template.format(date_string=date_string)
 
 # Get the full path
-output_path = os.path.join(output_path, output_filename)
+output_full_path = os.path.join(output_path, output_filename)
 
 # Save the document
-doc.save(output_path)
-print(f"Document saved as {output_path}")
+doc.save(output_full_path)
+print(f"Document saved as {output_full_path}")
+subprocess.run(["open", output_path])
