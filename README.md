@@ -39,6 +39,6 @@ This repo performs two actions:
 
 - `python gen.py yymmdd no-qr`
 
-### Searches a shopping list for hyperlinks, generates a QR where a link is found
+### Searches a shopping list for hyperlinks, generates a QR code where a link is found
 
 - `python qr.py yymmdd`

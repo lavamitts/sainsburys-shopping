@@ -1,35 +1,43 @@
 from datetime import datetime, date
 import re
-from docx import Document
+from typing import List, Optional
+from docx import Document  # type: ignore
 from classes.recipe import Recipe
 
 
-class Menu(object):
-    def __init__(self, menu_file):
-        self.menu_file = menu_file
-        self.recipes = []
+class Menu:
+    def __init__(self, menu_file: str) -> None:
+        self.menu_file: str = menu_file
+        self.recipes: List[Recipe] = []
+        self.menu_date_string: Optional[str] = None
+        self.menu_date: Optional[date] = None
         self.get_menu_date()
 
-    def get_menu_date(self):
-        match = re.search(r'\s(\d{6})\s', self.menu_file)
+    def get_menu_date(self) -> None:
+        match = re.search(r"\s(\d{6})\s", self.menu_file)
         if match:
-            self.menu_date_string = match.group(1) if match else None
-            self.menu_date = datetime.strptime(self.menu_date_string, "%y%m%d")
-            self.menu_date = self.menu_date.date()
+            menu_date_str: str = match.group(1)  # type explicitly as str
+            self.menu_date_string = menu_date_str
+            self.menu_date = datetime.strptime(menu_date_str, "%y%m%d").date()
         else:
             self.menu_date_string = None
             self.menu_date = None
 
-    def analyse(self):
-        doc = Document(self.menu_file)  # Open the Word document
+    def analyse(self) -> None:
+        """
+        Analyse the Word document, extract recipes from the first table,
+        and store Recipe objects in self.recipes.
+        """
+        doc: Document = Document(self.menu_file)  # type: ignore
         if not doc.tables:
             raise ValueError("No tables found in the document.")
 
-        table = doc.tables[0]  # Get the first table
-        cells = [cell.text.strip() for row in table.rows for cell in row.cells]  # Extract text from all cells
+        table = doc.tables[0]
+        cells: List[str] = [str(cell.text).strip() for row in table.rows for cell in row.cells]
         cells = cells[:7]
-        for cell in cells:
-            recipe = Recipe(cell, self.menu_date)
+
+        for cell_text in cells:
+            recipe: Recipe = Recipe(cell_text, self.menu_date)
             recipe.parse()
             if recipe.recipe not in ["Tea", "Tea:"]:
                 self.recipes.append(recipe)

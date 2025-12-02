@@ -6,6 +6,7 @@ import sys
 import utils.utils as u
 import subprocess
 
+
 # Ensure correct command-line usage
 if len(sys.argv) < 2:
     # print("Usage: python script.py YY-MM-DD {no-qr}")
@@ -44,7 +45,7 @@ if os.path.exists(output_path):
     print("\n\nThe file already exists. Overwrite? (Y/N)")
     choice = u.getch().lower()
     print(choice)  # echo the key the user pressed
-    if choice != 'y':
+    if choice != "y":
         print("\nAborted.")
         sys.exit()
     print("\nProceeding...")
@@ -59,7 +60,7 @@ if len(sys.argv) >= 3:
 # Function to format the date as 'Saturday, 1st Jan 2025'
 
 
-def format_date(dt):
+def format_date(dt: datetime) -> str:
     day = dt.day
     suffix = "th" if 11 <= day <= 13 else {1: "st", 2: "nd", 3: "rd"}.get(day % 10, "th")
     formatted_day = dt.strftime("%a").upper()  # Day in uppercase
@@ -95,8 +96,7 @@ for row in range(4):
 
         if row * column < 3:
             # Clear existing content
-            for p in cell.paragraphs:
-                cell._element.remove(p._element)
+            u.clear_cell(cell)
 
             # Add formatted date with "Days" style
             date_paragraph = cell.add_paragraph(formatted_date)

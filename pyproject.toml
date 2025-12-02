@@ -1,0 +1,13 @@
+[tool.ruff]
+line-length = 180
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.pyright]
+reportMissingTypeStubs = false
+
+[tool.pylance]
+typeCheckingMode = "basic"
+reportMissingImports = false

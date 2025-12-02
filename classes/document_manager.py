@@ -1,11 +1,12 @@
 import sys
 import utils.utils as u
 from classes.my_document import MyDocument
+from typing import List
 
 
 class DocumentManager(object):
-    def __init__(self, argv):
-        self.argv = argv
+    def __init__(self, argv: List[str]):
+        self.argv: List[str] = argv
         self.check_arguments()
 
     def check_arguments(self):
@@ -28,6 +29,3 @@ class DocumentManager(object):
 
         document = MyDocument(date_string)
         document.mark_links_with_image()
-
-    def go(self):
-        a = 1

@@ -15,13 +15,11 @@ class Recipe(object):
         self.day_index = 0
         self.recipe = ""
         self.source = ""
-        a = 1
 
     def parse(self):
         self.get_day_of_week()
         self.get_tea_recipe()
         self.remove_unnecessary_properties()
-        a = 1
 
     def get_day_of_week(self):
         days = {
@@ -34,7 +32,6 @@ class Recipe(object):
             "friday": 6,
         }
         parts = [part.strip() for part in self.cell.split("\n")]
-        a = 1
 
         matches = [(part, day) for part in parts for day in days if day in part.lower()]
 
@@ -52,7 +49,7 @@ class Recipe(object):
             parts = [part.strip() for part in txt.split("\t")]
             recipe_string = parts[-1]
             self.source = u.extract_text_in_parentheses(recipe_string)
-            if self.source != None:
+            if self.source is not None:
                 self.source = re.sub(r"p\.? [0-9]+", "", self.source).strip()
                 self.source = re.sub(r"p\.?[0-9]+", "", self.source).strip()
             if "(" in recipe_string:
@@ -74,7 +71,6 @@ class Recipe(object):
                     self.recipe = re.sub(key, replacement, self.recipe)
                     if self.source is not None:
                         self.source = re.sub(key, replacement, self.source)
-                a = 1
 
     def remove_unnecessary_properties(self):
         del self.cell

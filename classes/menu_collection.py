@@ -2,6 +2,7 @@ import openpyxl
 import os
 import pandas as pd
 import utils.utils as u
+from openpyxl.styles import Alignment, Font
 
 from classes.environment_variable import EnvironmentVariable
 from classes.menu import Menu
@@ -11,7 +12,7 @@ class MenuCollection(object):
     def __init__(self):
         u.clear_screen()
         self.get_folders()
-        self.shopping_folder = EnvironmentVariable("shopping_folder", "string", False).value
+        self.shopping_folder = str(EnvironmentVariable("shopping_folder", "string", False).value)
         self.menus = []
 
     def get_folders(self):
@@ -37,11 +38,7 @@ class MenuCollection(object):
         sorted_recipes = sorted(all_recipes, key=lambda r: r.recipe_date)
 
         # Prepare data for Excel (recipe_date, recipe, source)
-        self.recipe_data = [{
-            "recipe_date": recipe.recipe_date,
-            "recipe": recipe.recipe,
-            "source": recipe.source
-        } for recipe in sorted_recipes]
+        self.recipe_data = [{"recipe_date": recipe.recipe_date, "recipe": recipe.recipe, "source": recipe.source} for recipe in sorted_recipes]
 
     def write_to_excel(self):
         temp_filename = os.path.join(self.temp_folder, "temp.xlsx")
@@ -57,22 +54,22 @@ class MenuCollection(object):
         df = pd.read_excel(temp_filename)
 
         # Create the pivot table for unique recipes and their count
-        pivot_recipes = df.pivot_table(index="recipe", aggfunc="size", fill_value=0)
+        pivot_recipes = df.pivot_table(index="recipe", aggfunc=len, fill_value=0)
 
         # Create the pivot table for unique sources and their count
-        pivot_sources = df.pivot_table(index="source", aggfunc="size", fill_value=0)
+        pivot_sources = df.pivot_table(index="source", aggfunc=len, fill_value=0)
 
         # Reset index to make sure sorting works correctly
         pivot_recipes = pivot_recipes.reset_index()
         pivot_sources = pivot_sources.reset_index()
 
         # Sort both pivot tables by the count in descending order
-        pivot_recipes = pivot_recipes.sort_values(by=[0, 'recipe'], ascending=[False, True])
-        pivot_sources = pivot_sources.sort_values(by=0, ascending=False)
+        pivot_recipes = pivot_recipes.sort_values(by=[str(0), "recipe"], ascending=[False, True])
+        pivot_sources = pivot_sources.sort_values(by=str(0), ascending=False)
 
         # Rename the column for counts
-        pivot_recipes.columns = ['recipe', 'Count']
-        pivot_sources.columns = ['source', 'Count']
+        pivot_recipes.columns = ["recipe", "Count"]
+        pivot_sources.columns = ["source", "Count"]
 
         # Write both pivot tables to a new Excel file, each in a different sheet
         with pd.ExcelWriter(output_filename, engine="openpyxl") as writer:
@@ -93,18 +90,18 @@ class MenuCollection(object):
             sheet = wb[sheet_name]
 
             # Set the width of the first column to 75
-            sheet.column_dimensions['A'].width = 75
+            sheet.column_dimensions["A"].width = 75
 
             # Left-align all content (starting from the second row, second column)
             for row in sheet.iter_rows(min_row=2, min_col=1, max_col=sheet.max_column):
                 for cell in row:
-                    cell.alignment = openpyxl.styles.Alignment(horizontal="left")
-                    cell.font = openpyxl.styles.Font(bold=False)  # Remove bold from all content
+                    cell.alignment = Alignment(horizontal="left")
+                    cell.font = Font(bold=False)  # Remove bold from all content
 
             # Bold the headers (first row)
             for cell in sheet[1]:
-                cell.font = openpyxl.styles.Font(bold=True)
-                cell.alignment = openpyxl.styles.Alignment(horizontal="center")  # Center-align header
+                cell.font = Font(bold=True)
+                cell.alignment = Alignment(horizontal="center")  # Center-align header
 
         # Apply formatting to both pivot sheets
         format_pivot_sheet("Recipe Count")
