@@ -39,6 +39,7 @@ output_filename_template = str(EnvironmentVariable("output_filename_template", "
 output_filename = output_filename_template.format(date_string=date_string)
 
 # Get the full path
+os.makedirs(output_path, exist_ok=True)
 output_path = os.path.join(output_path, output_filename)
 
 if os.path.exists(output_path):

@@ -8,5 +8,6 @@ import subprocess
 shopping_folder = EnvironmentVariable("shopping_folder", "string", False).value
 current_year = str(datetime.now().year)
 output_path = os.path.join(str(shopping_folder), current_year)
+os.makedirs(output_path, exist_ok=True)
 
 subprocess.run(["open", output_path])
