@@ -7,21 +7,30 @@ This repo performs two actions:
 - Generates shopping lists from a template based on a provided start date
 - Generates QR codes for hyperlinked recipes
 
-## Installation
+---
 
-- Create and activate a virtual environment, e.g.
+## Prerequisites
 
-  ```shell
-  uv venv .venv
-  source .venv/bin/activate  # (MacOS)
-  .venv\Scripts\Activate  # (Windows)
-  ```
+This project uses **uv** for dependency and Python version management. Ensure you have it installed before proceeding.
 
-- Install the required packages:
+## Setup
 
-  ```shell
-  uv pip install -r requirements.txt
-  ```
+You no longer need to manually manage virtual environments. The setup is now handled through a unified project synchronisation.
+
+1.  **Sync the environment**
+    Run the following command to create a lockfile and install all required dependencies (such as Pillow) into a managed environment:
+
+    ```shell
+    uv sync
+    ```
+
+    This should be carried out after a remote `dependabot` update.
+
+2.  **Updating dependencies**
+    If you need to add new packages, use the `add` command instead of editing requirements files manually:
+    ```shell
+    uv add requests
+    ```
 
 ## Configuration
 
