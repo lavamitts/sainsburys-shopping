@@ -1,3 +1,1 @@
-source /Users/mattlavis/projects/personal-dev/shopping/.venv/bin/activate
-
 uv run gen.py
